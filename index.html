@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanksgiving FOOD!</title>
+</head>
+<body>
+    <h1 class="greeting">Thanksgiving FOOD!</h1>
+
+    <p class="fullMeal"></p>
+
+    <p class="priceInfo"></p>
+
+    <p class="calorieInfo"></p>
+
+    <script>
+        const thanksgivingMeal = {
+            starter: { 
+                fruit: "honeydew melon",
+                wine: "moscato",
+                calories: 180
+            },
+            entree: {
+                meat: "Turkey",
+                alt: "Stuffed green peppers",
+                vegetables: {
+                    potatoes: "Creamed mashed potatoes",
+                    greens: "French beans",
+                    salad: "Radicchio"
+                },
+                sides: {
+                    bread: "garlic bread rolls",
+                    pasta: "Macaroni and Cheese"
+                },
+                calories: 450
+            },
+            dessert: {
+                ice_cream: "pumpkin-vanilla",
+                cake: "frosted pumpkin pie",
+                calories: 300
+            },
+            total_cost: 25.0,
+            senior_discount: 0.10,
+            prettyPrint: function () {
+                let menuStr = `Starter: ${this.starter.fruit}, Wine: ${this.starter.wine}\n`;
+                menuStr += `Entree: ${this.entree.meat}, Alt: ${this.entree.alt}\n`;
+                menuStr += `Vegetables: ${this.entree.vegetables.potatoes}, ${this.entree.vegetables.greens}, Salad: ${this.entree.vegetables.salad}\n`;
+                menuStr += `Sides: ${this.entree.sides.bread}, ${this.entree.sides.pasta}\n`;
+                menuStr += `Dessert: Ice Cream - ${this.dessert.ice_cream}, Cake - ${this.dessert.cake}\n`;
+
+                console.log("Menu:\n", menuStr);
+                return menuStr;
+            },
+            totalPrice: function (isSenior) {
+                let totalPrice = this.total_cost;
+                if (isSenior) {
+                    totalPrice -= this.total_cost * this.senior_discount;
+                }
+
+                console.log("Total Price:", totalPrice.toFixed(2));
+                return totalPrice.toFixed(2);
+            },
+            totalCalories: function () {
+                return this.starter.calories + this.entree.calories + this.dessert.calories;
+            },
+            caloriesFrom: function (part) {
+                switch (part) {
+                    case "starter":
+                        return this.starter.calories;
+                    case "entree":
+                        return this.entree.calories;
+                    case "dessert":
+                        return this.dessert.calories;
+                    default:
+                        return 0;
+                }
+            }
+        };
+
+        let fullMeal = document.querySelector(".fullMeal");
+        let priceInfo = document.querySelector(".priceInfo");
+        let calorieInfo = document.querySelector(".calorieInfo");
+
+        fullMeal.textContent = `Menu:\n${thanksgivingMeal.prettyPrint()}`;
+
+        priceInfo.textContent = `Total Price${thanksgivingMeal.senior_discount > 0 ? ' (Seniors get 10% off)': ''}: $${thanksgivingMeal.totalPrice(false)}`;
+        calorieInfo.textContent = `Total Calories: ${thanksgivingMeal.totalCalories()} calories`;
+
+        const starterCalories = thanksgivingMeal.caloriesFrom("starter");
+        const entreeCalories = thanksgivingMeal.caloriesFrom("entree");
+        const dessertCalories = thanksgivingMeal.caloriesFrom("dessert");
+
+        calorieInfo.innerHTML += `<br>Calories from Starter: ${starterCalories} calories`;
+        calorieInfo.innerHTML += `<br>Calories from Entree: ${entreeCalories} calories`;
+        calorieInfo.innerHTML += `<br>Calories from Dessert: ${dessertCalories} calories`;
+
+        console.log("Total Calories: ", thanksgivingMeal.totalCalories());
+        console.log("Calories from Starter:", starterCalories);
+        console.log("Calories from Entree:", entreeCalories);
+        console.log("Calories from Dessert:", dessertCalories);
+    </script>
+</body>
+</html>
